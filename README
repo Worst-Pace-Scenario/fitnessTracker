@@ -2,7 +2,7 @@
 fitnessTrackerBackend
 -index.js
 -api                
-    --index         (extract token)
+    --index         (extract token,add to body) (wirte routes for sub routers)
     --Users         (Writing routes) (involves hashing)
     --Activites     (Writing routes)
     --Routines      (Writing routes)
