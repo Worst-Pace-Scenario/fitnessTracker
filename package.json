@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/Worst-Pace-Scenario/fitnessTrackerBackend/issues"
   },
-  "homepage": "https://github.com/Worst-Pace-Scenario/fitnessTrackerBackend#readme",
+  "homepage": "/",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
