@@ -1,0 +1,44 @@
+**File Structure
+fitnessTrackerBackend
+-index.js
+-api                
+    --index         (extract token,add to body) (write routes for sub routers)
+    --Users         (Writing routes) (involves hashing)
+    --Activites     (Writing routes)
+    --Routines      (Writing routes)
+-db
+    --index.js      (Writing SQL)
+
+createdb worstPaceScenario
+psql worstPaceScenario
+
+worstPaceScenario seeding
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255),
+    password VARCHAR(255)
+);
+
+CREATE TABLE activities (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT NOT NULL
+);
+
+CREATE TABLE routines (
+    id SERIAL PRIMARY KEY,
+    "creatorId" INTEGER REFERENCES users(id),
+    "isPublic" BOOLEAN DEFAULT false,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    goal TEXT NOT NULL
+);
+
+CREATE TABLE "routine_activities" (
+    id SERIAL PRIMARY KEY,
+    "routineId" INTEGER REFERENCES routines(id),
+    "activityId" INTEGER REFERENCES activities(id),
+    duration INTEGER,
+    count INTEGER,
+    UNIQUE("routineId", "activityId")
+);
