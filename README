@@ -1,0 +1,10 @@
+##File Structure
+fitnessTrackerBackend
+-index.js
+-api                
+    --index         (extract token)
+    --Users         (Writing routes)
+    --Activites     (Writing routes)
+    --Routines      (Writing routes)
+-db
+    --index.js      (Writing SQL)
