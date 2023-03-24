@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use(morgan('dev'));
 
-app.use("./api/routines", RoutineRouter)
+app.use("/api/routines", RoutineRouter)
 
 app.use("/api/activities", activites)
 
