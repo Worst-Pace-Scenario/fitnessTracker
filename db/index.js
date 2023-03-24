@@ -1,6 +1,6 @@
-const pg = require("pg");
+const {Client} = require("pg");
 
-const client = new pg.Client(`postgress://localhost:5432/worstPaceScenario`)
+const client = new Client(`postgress://localhost:5432/worstPaceScenario`)
 client.password = "1025464"
 
 
@@ -392,123 +392,149 @@ async function buildDb() {
 
         client.connect()
         
-        const users = await Promise.all(usersToCreate.map(createUser))
+        // const users = await Promise.all(usersToCreate.map(createUser))
 
 
-        const activitiesToCreate = [
-            {
-              name: "wide-grip standing barbell curl",
-              description: "Lift that barbell!",
-            },
-            {
-              name: "Incline Dumbbell Hammer Curl",
-              description:
-                "Lie down face up on an incline bench and lift thee barbells slowly upward toward chest",
-            },
-            {
-              name: "bench press",
-              description: "Lift a safe amount, but push yourself!",
-            },
-            { name: "Push Ups", description: "Pretty sure you know what to do!" },
-            { name: "squats", description: "Heavy lifting." },
-            { name: "treadmill", description: "running" },
-            { name: "stairs", description: "climb those stairs" },
-          ]
-          const activities = await Promise.all(activitiesToCreate.map(createActivity))
-    
-        const routinesToCreate = [
-            {
-              creatorId: 2,
-              isPublic: false,
-              name: "Bicep Day",
-              goal: "Work the Back and Biceps.",
-            },
-            {
-              creatorId: 1,
-              isPublic: true,
-              name: "Chest Day",
-              goal: "To beef up the Chest and Triceps!",
-            },
-            {
-              creatorId: 1,
-              isPublic: false,
-              name: "Leg Day",
-              goal: "Running, stairs, squats",
-            },
-            {
-              creatorId: 2,
-              isPublic: true,
-              name: "Cardio Day",
-              goal: "Running, stairs. Stuff that gets your heart pumping!",
-            },
-          ]
-          const routines = await Promise.all(
-            routinesToCreate.map((routine) => createRoutine(routine))
-          )
-          console.log("Routines Created: ", routines)
+        // const albert =  await getUserByUsername("albert")
+        // const sandra = await getUserById(2)
+        // const glamgal = await getUser({username: "glamgal", password: "glamgal123"})
 
-        const [bicepRoutine, chestRoutine, legRoutine, cardioRoutine] =  await getRoutinesWithoutActivities()
+        // console.log("albert", albert)
+        // console.log("sandra", sandra)
+        // console.log("glamgal", glamgal)
+
+        // const activitiesToCreate = [
+        //     {
+        //       name: "wide-grip standing barbell curl",
+        //       description: "Lift that barbell!",
+        //     },
+        //     {
+        //       name: "Incline Dumbbell Hammer Curl",
+        //       description:
+        //         "Lie down face up on an incline bench and lift thee barbells slowly upward toward chest",
+        //     },
+        //     {
+        //       name: "bench press",
+        //       description: "Lift a safe amount, but push yourself!",
+        //     },
+        //     { name: "Push Ups", description: "Pretty sure you know what to do!" },
+        //     { name: "squats", description: "Heavy lifting." },
+        //     { name: "treadmill", description: "running" },
+        //     { name: "stairs", description: "climb those stairs" },
+        //   ]
+        //   const activities = await Promise.all(activitiesToCreate.map(createActivity))
+      
+        //   console.log("activities created:")
+        //   console.log(activities)
+
+        // const activites = await getAllActivities();
+        // console.log("All activities: ", activites);
+
+        // const benchPress = await getActivityById(3);
+        // console.log("bench press", benchPress);
+
+        // const updatedAct = await updateActivity({id : 1, name: "Updates!", description: "I was updated"})
+        // console.log(updatedAct)
+        // const routinesToCreate = [
+        //     {
+        //       creatorId: 2,
+        //       isPublic: false,
+        //       name: "Bicep Day",
+        //       goal: "Work the Back and Biceps.",
+        //     },
+        //     {
+        //       creatorId: 1,
+        //       isPublic: true,
+        //       name: "Chest Day",
+        //       goal: "To beef up the Chest and Triceps!",
+        //     },
+        //     {
+        //       creatorId: 1,
+        //       isPublic: false,
+        //       name: "Leg Day",
+        //       goal: "Running, stairs, squats",
+        //     },
+        //     {
+        //       creatorId: 2,
+        //       isPublic: true,
+        //       name: "Cardio Day",
+        //       goal: "Running, stairs. Stuff that gets your heart pumping!",
+        //     },
+        //   ]
+        //   const routines = await Promise.all(
+        //     routinesToCreate.map((routine) => createRoutine(routine))
+        //   )
+        //   console.log("Routines Created: ", routines)
+        // const routines =  await getRoutinesWithoutActivites()
+        // console.log(routines)
+        // const updatedRou = await updateRoutine({id: 1, isPublic: true, name: "updated!!", goal: "to update yourself!"})
+        // console.log(updatedRou)
+
+        // const [bicepRoutine, chestRoutine, legRoutine, cardioRoutine] =  await getRoutinesWithoutActivities()
         
-        const [bicep1, bicep2, chest1, chest2, leg1, leg2, leg3] = await getAllActivities()
-        const routineActivitiesToCreate = [
-            {
-              routineId: bicepRoutine.id,
-              activityId: bicep1.id,
-              count: 10,
-              duration: 5,
-            },
-            {
-              routineId: bicepRoutine.id,
-              activityId: bicep2.id,
-              count: 10,
-              duration: 8,
-            },
-            {
-              routineId: chestRoutine.id,
-              activityId: chest1.id,
-              count: 10,
-              duration: 8,
-            },
-            {
-              routineId: chestRoutine.id,
-              activityId: chest2.id,
-              count: 10,
-              duration: 7,
-            },
-            {
-              routineId: legRoutine.id,
-              activityId: leg1.id,
-              count: 10,
-              duration: 9,
-            },
-            {
-              routineId: legRoutine.id,
-              activityId: leg2.id,
-              count: 10,
-              duration: 10,
-            },
-            {
-              routineId: legRoutine.id,
-              activityId: leg3.id,
-              count: 10,
-              duration: 7,
-            },
-            {
-              routineId: cardioRoutine.id,
-              activityId: leg2.id,
-              count: 10,
-              duration: 10,
-            },
-            {
-              routineId: cardioRoutine.id,
-              activityId: leg3.id,
-              count: 10,
-              duration: 15,
-            },
-          ]
-          const routineActivities = await Promise.all(
-            routineActivitiesToCreate.map(addActivityToRoutine)
-          )
+        // const [bicep1, bicep2, chest1, chest2, leg1, leg2, leg3] = await getAllActivities()
+        // const routineActivitiesToCreate = [
+        //     {
+        //       routineId: bicepRoutine.id,
+        //       activityId: bicep1.id,
+        //       count: 10,
+        //       duration: 5,
+        //     },
+        //     {
+        //       routineId: bicepRoutine.id,
+        //       activityId: bicep2.id,
+        //       count: 10,
+        //       duration: 8,
+        //     },
+        //     {
+        //       routineId: chestRoutine.id,
+        //       activityId: chest1.id,
+        //       count: 10,
+        //       duration: 8,
+        //     },
+        //     {
+        //       routineId: chestRoutine.id,
+        //       activityId: chest2.id,
+        //       count: 10,
+        //       duration: 7,
+        //     },
+        //     {
+        //       routineId: legRoutine.id,
+        //       activityId: leg1.id,
+        //       count: 10,
+        //       duration: 9,
+        //     },
+        //     {
+        //       routineId: legRoutine.id,
+        //       activityId: leg2.id,
+        //       count: 10,
+        //       duration: 10,
+        //     },
+        //     {
+        //       routineId: legRoutine.id,
+        //       activityId: leg3.id,
+        //       count: 10,
+        //       duration: 7,
+        //     },
+        //     {
+        //       routineId: cardioRoutine.id,
+        //       activityId: leg2.id,
+        //       count: 10,
+        //       duration: 10,
+        //     },
+        //     {
+        //       routineId: cardioRoutine.id,
+        //       activityId: leg3.id,
+        //       count: 10,
+        //       duration: 15,
+        //     },
+        //   ]
+        //   const routineActivities = await Promise.all(
+        //     routineActivitiesToCreate.map(addActivityToRoutine)
+        //   )
+        //   console.log("routine_activities created: ", routineActivities)
+        //   const routines = await getAllRoutines()
+        //   console.log(routines)
         client.end()
         // console.log("Users created:")
         // console.log(users)
