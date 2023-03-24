@@ -1,6 +1,6 @@
-const pg = require("pg");
+const {Client} = require("pg");
 
-const client = new pg.Client(`postgress://localhost:5432/worstPaceScenario`)
+const client = new Client(`postgress://localhost:5432/worstPaceScenario`)
 client.password = "1025464"
 
 
