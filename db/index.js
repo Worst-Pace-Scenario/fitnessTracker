@@ -1,6 +1,6 @@
-const {Client} = require("pg");
+const pg = require("pg");
 
-const client = new Client(`postgress://localhost:5432/worstPaceScenario`)
+const client = new pg.Client(`postgress://localhost:5432/worstPaceScenario`)
 client.password = "1025464"
 
 
@@ -164,9 +164,9 @@ async function getRoutinesWithoutActivities() {
 async function getRoutineById(id) {
     try {
         const {rows: [routine]} = await client.query(`
-        SELCT * FROM routines
-        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id
+        SELECT routines.* FROM routines
+        FULL OUTER JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
+        FULL OUTER JOIN activities on "routine_activities"."activityId" = activities.id
         WHERE routines.id = $1;
         `, [id])
 
@@ -525,7 +525,7 @@ async function buildDb() {
           }
 }
 
-buildDb()
+// buildDb()
 
 module.exports = {
     client, createUser, getUser, getUserById, getUserByUsername, createActivity, getActivityById, getAllActivities, updateActivity, createRoutine, getRoutineById, getAllPublicRoutines, getAllPublicRoutines,getRoutinesWithoutActivities, getAllRoutines, getAllRoutinesByUser,getPublicRoutinesByUser,getPublicRoutinesByActivity, updateRoutine, destroyRoutine, getRoutineActivityById, addActivityToRoutine, updateRoutineActivity, destroyRoutineActivity, getRoutineActivityByRoutine
