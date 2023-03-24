@@ -264,7 +264,7 @@ async function getPublicRoutinesByActivity({activityId}) {
             routine => getRoutineById(routine.id)
         ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
