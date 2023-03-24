@@ -8,9 +8,9 @@ const activities = express.Router();
 
 
 // GET /api/activities/:activityId/routines
-activities.get('/activities/:activityId/routines', async (req, res) => {
+activities.get('/:activityId/routines', async (req, res) => {
     try {
-      const id = req.params.id;
+      const id = req.params.activityId;
       const activity = await getActivityById(id);
       if (!activity) {
         res.status(404).json({ message: `Activity with id ${id} not found` });
@@ -25,7 +25,7 @@ activities.get('/activities/:activityId/routines', async (req, res) => {
   
 
 // GET /api/activities
-activities.get('/activities', async (req, res) => {
+activities.get('/', async (req, res) => {
     try {
         console.log("Starting to fetch activities")
         const allActivities = await getAllActivities();

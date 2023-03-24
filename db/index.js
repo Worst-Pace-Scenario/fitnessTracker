@@ -389,6 +389,7 @@ async function buildDb() {
         ]
 
         client.connect()
+        
         // const users = await Promise.all(usersToCreate.map(createUser))
 
 
