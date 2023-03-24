@@ -220,15 +220,16 @@ async function getAllPublicRoutines() {
 
 async function getAllRoutinesByUser({id}) {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
-        FULL OUTER JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        FULL OUTER JOIN activities on "routine_activities"."activityId" = activities.id
+        const {rows: ids} = await client.query(`
+        SELECT id FROM routines
         WHERE "creatorId" = $1;
         `,[id])
         
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
@@ -236,29 +237,32 @@ async function getAllRoutinesByUser({id}) {
 
 async function getPublicRoutinesByUser({id}) {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
-        FULL OUTER JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        FULL OUTER JOIN activities on "routine_activities"."activityId" = activities.id
+        const {rows: ids} = await client.query(`
+        SELECT id FROM routines
         WHERE routines."creatorId" = $1 && "isPublic" = true;
         `,[id])
         
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
 }
 
-async function getPublicRoutinesByActivity({id}) {
+async function getPublicRoutinesByActivity({activityId}) {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
-        FULL OUTER JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        FULL OUTER JOIN activities on "routine_activities"."activityId" = activities.id
-        WHERE activities.id = $1  && "isPublic" = true;
-        `,[id])
+        const {rows: ids} = await client.query(`
+        SELECT routines.id FROM routines
+        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
+        WHERE "routine_activities".id = $1  && "isPublic" = true;
+        `,[activityId])
         
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
         return rows;
     } catch (error) {
