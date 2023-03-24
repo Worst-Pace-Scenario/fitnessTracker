@@ -4,7 +4,7 @@ const morgan = require("morgan");
 require('dotenv').config();
 
 const {RoutineRouter} = require("./api/routines")
-const {activites} = require("/api/Activities")
+const activites = require("./api/Activities")
 
 
 const {client} = require("./db")

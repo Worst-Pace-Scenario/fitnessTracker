@@ -369,6 +369,7 @@ async function destroyRoutineActivity(id) {
 
 async function getRoutineActivityByRoutine ({id}) {
     try {
+        console.log("now looking for routine: ", id)
         const {rows} = await client.query(`
         SELECT * FROM "routine_activities"
         WHERE "routineId" = ${id}
