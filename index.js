@@ -22,4 +22,4 @@ app.use("/api/activities", activites)
 client.connect();
 app.listen(1337, ()=> {
     console.log("We are now connected to port 1337")
-})
+}) 
