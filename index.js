@@ -15,4 +15,4 @@ app.use(morgan('dev'));
 client.connect();
 app.listen(1337, ()=> {
     console.log("We are now connected to port 1337")
-})
+}) 
