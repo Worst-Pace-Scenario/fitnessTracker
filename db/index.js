@@ -1,6 +1,6 @@
-const {Client} = require("pg");
+const pg = require("pg");
 
-const client = new Client(`postgress://localhost:5432/worstPaceScenario`)
+const client = new pg.Client(`postgress://localhost:5432/worstPaceScenario`)
 client.password = "1025464"
 
 
@@ -164,11 +164,19 @@ async function getRoutinesWithoutActivities() {
 async function getRoutineById(id) {
     try {
         const {rows: [routine]} = await client.query(`
-        SELCT * FROM routines
-        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id
+        SELECT routines.* FROM routines
         WHERE routines.id = $1;
         `, [id])
+
+        if(!routine)return undefined
+
+        const {rows: activites} = await client.query(`
+        SELECT activities.* FROM activities
+        JOIN "routine_activities" on "routine_activities"."activityId" = activities.id
+        WHERE "routine_activities"."routineId" = $1;
+        `, [id])
+
+        routine.activites = activites;
 
         return routine;
     } catch (error) {
@@ -178,28 +186,33 @@ async function getRoutineById(id) {
 
 async function getAllRoutines() {
     try {
-        const {rows} = await client.query(`
-        SELECT * FROM routines
-        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id;
+        const {rows: ids} = await client.query(`
+        SELECT id FROM routines;
         `)
+
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
         return rows;
     } catch (error) {
         console.log(error)
     }
+
 }
 
 async function getAllPublicRoutines() {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
-        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id
+        const {rows: ids} = await client.query(`
+        SELECT id FROM routines
         WHERE "isPublic" = true;
         `)
         
-        return rows;
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
+
+        return routines;
     } catch (error) {
         console.log(error)
     }
@@ -207,15 +220,16 @@ async function getAllPublicRoutines() {
 
 async function getAllRoutinesByUser({id}) {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
-        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id
+        const {rows: ids} = await client.query(`
+        SELECT id FROM routines
         WHERE "creatorId" = $1;
         `,[id])
         
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
@@ -223,31 +237,34 @@ async function getAllRoutinesByUser({id}) {
 
 async function getPublicRoutinesByUser({id}) {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
-        JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id
+        const {rows: ids} = await client.query(`
+        SELECT id FROM routines
         WHERE routines."creatorId" = $1 && "isPublic" = true;
         `,[id])
         
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
 }
 
-async function getPublicRoutinesByActivity({id}) {
+async function getPublicRoutinesByActivity({activityId}) {
     try {
-        const {rows} = await client.query(`
-        SELECT routines.* FROM routines
+        const {rows: ids} = await client.query(`
+        SELECT routines.id FROM routines
         JOIN "routine_activities" on "routine_activities"."routineId" = routines.id
-        JOIN activities on "routine_activities"."activityId" = activities.id
-        WHERE activities.id = $1  && "isPublic" = true;
-        `,[id])
+        WHERE "routine_activities".id = $1  && "isPublic" = true;
+        `,[activityId])
         
+        const routines = await Promise.all(ids.map(
+            routine => getRoutineById(routine.id)
+        ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
@@ -525,7 +542,7 @@ async function buildDb() {
           }
 }
 
-buildDb()
+// buildDb()
 
 module.exports = {
     client, createUser, getUser, getUserById, getUserByUsername, createActivity, getActivityById, getAllActivities, updateActivity, createRoutine, getRoutineById, getAllPublicRoutines, getAllPublicRoutines,getRoutinesWithoutActivities, getAllRoutines, getAllRoutinesByUser,getPublicRoutinesByUser,getPublicRoutinesByActivity, updateRoutine, destroyRoutine, getRoutineActivityById, addActivityToRoutine, updateRoutineActivity, destroyRoutineActivity, getRoutineActivityByRoutine
