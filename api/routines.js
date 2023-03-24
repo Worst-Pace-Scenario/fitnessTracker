@@ -1,7 +1,7 @@
 const express = require("express");
 const RoutineRouter = express.Router();
 
-const {getAllPublicRoutines, getRoutinesWithoutActivities, createRoutine, getRoutineById, updateRoutine, destroyRoutine} = require("../db")
+const {getAllPublicRoutines, getRoutinesWithoutActivities, createRoutine, getRoutineById, updateRoutine, destroyRoutine, addActivityToRoutine} = require("../db")
 
 RoutineRouter.get("/", async (req,res) => {
     const allRoutines = await getAllPublicRoutines();
@@ -79,6 +79,26 @@ RoutineRouter.delete("/:routineId", async (req, res) => {
     } catch (error) {
         console.log(error)
     }
+})
+
+RoutineRouter.post("/:routineId/activities", async (req, res) =>{
+    const {routineId} = req.params;
+
+    const {activityId, count, duration} = req.body;
+
+    try {
+        const routineActivity = await addActivityToRoutine({routineId, activityId, count, duration})
+
+        if(routineActivity){
+            res.send(routineActivity)
+        }else{
+            res.send("Invalid routine or activity data").status(500)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+
 })
 
 

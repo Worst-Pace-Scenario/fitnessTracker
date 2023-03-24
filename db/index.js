@@ -331,6 +331,8 @@ async function addActivityToRoutine({routineId, activityId, count, duration}) {
         RETURNING *;
         `, [routineId, activityId, count, duration])
         
+        if(!routAct) return undefined
+
         return routAct;
     } catch (error) {
         console.log(error)
