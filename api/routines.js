@@ -1,7 +1,7 @@
 const express = require("express");
 const RoutineRouter = express.Router();
 
-const {getAllPublicRoutines, getRoutinesWithoutActivities, createRoutine, getRoutineById, updateRoutine} = require("../db")
+const {getAllPublicRoutines, getRoutinesWithoutActivities, createRoutine, getRoutineById, updateRoutine, destroyRoutine} = require("../db")
 
 RoutineRouter.get("/", async (req,res) => {
     const allRoutines = await getAllPublicRoutines();
@@ -53,6 +53,32 @@ RoutineRouter.patch("/:routineId", async (req,res) =>{
     }
 }) 
 
+
+RoutineRouter.delete("/:routineId", async (req, res) => {
+    const {routineId} = req.params;
+
+    const creatorId = req.body.user.id
+
+    try {
+        const deltedRout = await getRoutineById(routineId);
+
+
+        if(deltedRout && deltedRout.creatorId == creatorId){
+            await destroyRoutine(routineId)
+            res.send({success: true,
+            deltedRout
+            })
+        }else if(deltedRout){
+            res.send({success: false,
+                message: "You do not have access to delete this routine."}).status(403)
+        }else{
+            res.send({success: false,
+                message: "No routine was found with that ID."}).status(404)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 
 
