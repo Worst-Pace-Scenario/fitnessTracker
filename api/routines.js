@@ -15,7 +15,7 @@ RoutineRouter.post("/", async(req, res) =>{
     const {name, goal,} = req.body;
     const creatorId = req.body.user.id
     
-    const isPublic = false;
+    let isPublic = false;
     if(req.body.isPublic) {
         isPublic = req.body.isPublic;
     }
@@ -32,7 +32,7 @@ RoutineRouter.patch("/:routineId", async (req,res) =>{
     const {name, goal,} = req.body;
     const creatorId = req.body.user.id
     
-    const isPublic = false;
+    let isPublic = false;
     if(req.body.isPublic) {
         isPublic = req.body.isPublic;
     }
