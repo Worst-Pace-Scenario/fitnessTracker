@@ -39,6 +39,7 @@ RoutineRouter.patch("/:routineId", async (req,res) =>{
 
     try {
         const originalPost = await getRoutineById(routineId);
+        console.log(originalPost)
         const id = originalPost.id
 
         if(originalPost.creatorId == creatorId){
@@ -66,7 +67,7 @@ RoutineRouter.delete("/:routineId", async (req, res) => {
         if(deltedRout && deltedRout.creatorId == creatorId){
             await destroyRoutine(routineId)
             res.send({success: true,
-            deltedRout
+            "deleted routine": deltedRout
             })
         }else if(deltedRout){
             res.send({success: false,
