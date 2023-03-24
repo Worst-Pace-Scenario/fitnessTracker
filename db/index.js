@@ -1,6 +1,6 @@
-const pg = require("pg");
+const {Client} = require("pg");
 
-const client = new pg.Client(`postgress://localhost:5432/worstPaceScenario`)
+const client = new Client(`postgress://localhost:5432/worstPaceScenario`)
 client.password = "1025464"
 
 
@@ -547,5 +547,5 @@ async function buildDb() {
 // buildDb()
 
 module.exports = {
-    client, createUser, getUser, getUserById, getUserByUsername, createActivity, getActivityById, getAllActivities, updateActivity, createRoutine, getRoutineById, getAllPublicRoutines, getAllPublicRoutines,getRoutinesWithoutActivities, getAllRoutines, getAllRoutinesByUser,getPublicRoutinesByUser,getPublicRoutinesByActivity, updateRoutine, destroyRoutine, getRoutineActivityById, addActivityToRoutine, updateRoutineActivity, destroyRoutineActivity, getRoutineActivityByRoutine
+    client
 }
