@@ -4,7 +4,7 @@ const morgan = require("morgan");
 require('dotenv').config();
 
 const {RoutineRouter} = require("./api/routines")
-// const {activites} = require("/api/Activities")
+const activites = require("./api/Activities")
 
 
 const {client} = require("./db")
@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 
 app.use("/api/routines", RoutineRouter)
 
-// app.use("/api/activities", activites)
+app.use("/api/activities", activites)
 
 client.connect();
 app.listen(1337, ()=> {
