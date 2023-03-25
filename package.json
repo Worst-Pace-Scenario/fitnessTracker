@@ -1,7 +1,7 @@
 {
   "name": "fitnesstrackerbackend",
   "version": "1.0.0",
-  "description": "",
+  "description": "**File Structure fitnessTrackerBackend -index.js -api                     --index         (extract token,add to body) (write routes for sub routers)     --Users         (Writing routes) (involves hashing)     --Activites     (Writing routes)     --Routines      (Writing routes) -db     --index.js      (Writing SQL)",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/Worst-Pace-Scenario/fitnessTrackerBackend/issues"
   },
-  "homepage": "/",
+  "homepage": "http:///",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
