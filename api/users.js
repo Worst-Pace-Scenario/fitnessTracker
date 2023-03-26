@@ -37,9 +37,10 @@ userRouter.post("/register", async (req, res) => {
     const user = await createUser({ username, password });
     console.log("created user ", user)
 
+    const id = user.id
 
     console.log("creating token")
-    const token = jwt.sign( user.toJSON() , process.env.JWT_SECRET);
+    const token = jwt.sign( {username, id} , process.env.JWT_SECRET);
     console.log("token created ", token )
 
     res.send({
@@ -64,8 +65,10 @@ userRouter.post("/login", async(req, res) => {
   try {
       const user = await getUser ({username, password});
 
+      const {username, password, id} = user;
+
       if (user && user.password == password) {
-        const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+        const token = jwt.sign({username, id}, process.env.JWT_SECRET);
         // create token & return to user
         res.send({ message: "you're logged in!", token:token });
       } else {
