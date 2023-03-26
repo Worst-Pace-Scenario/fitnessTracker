@@ -4,6 +4,7 @@
   "description": "**File Structure fitnessTrackerBackend -index.js -api                     --index         (extract token,add to body) (write routes for sub routers)     --Users         (Writing routes) (involves hashing)     --Activites     (Writing routes)     --Routines      (Writing routes) -db     --index.js      (Writing SQL)",
   "main": "index.js",
   "scripts": {
+    "seed" :"node db/index.js",
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
