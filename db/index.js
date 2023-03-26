@@ -581,7 +581,7 @@ async function buildDb() {
           }
 }
 
-buildDb()
+// buildDb()
 
 module.exports = {
     client, createUser, getUser, getUserById, getUserByUsername, createActivity, getActivityById, getAllActivities, updateActivity, createRoutine, getRoutineById, getAllPublicRoutines, getAllPublicRoutines,getRoutinesWithoutActivities, getAllRoutines, getAllRoutinesByUser,getPublicRoutinesByUser,getPublicRoutinesByActivity, updateRoutine, destroyRoutine, getRoutineActivityById, addActivityToRoutine, updateRoutineActivity, destroyRoutineActivity, getRoutineActivityByRoutine
