@@ -35,7 +35,7 @@ userRouter.post("/users/register", async (req, res) => {
     
     const user = await createUser({ username, password });
 
-    const token = jwt.sign({ id: user.id, username }, process.env.JWT_SECRET);
+    const token = jwt.sign( user , process.env.JWT_SECRET);
     res.status(201).json({
       message: "Registration successful",
       token
@@ -96,12 +96,14 @@ userRouter.get("/users/me", async (req, res)=> {
 userRouter.get("/users/:username/routines", async (req, res) =>{
   const {username, routines, id} = req.body
   try {
-    const userRoutines = await getAllRoutinesByUser ({username, routines, id})
-    if (username && id == user.id ) {
-      res.send(userRoutines).status(202)
-    }
     
-  } catch (error) {
+    if (req.body.user) {
+      const userRoutines = await getAllRoutinesByUser ({username, routines, id})
+      res.send(userRoutines).status(202)
+    } else {
+      res.send("you are not logged in").status(401)
+    }
+    } catch (error) {
     console.log(error).status(505)
   }
 })
