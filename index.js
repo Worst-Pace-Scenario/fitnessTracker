@@ -22,7 +22,7 @@ app.use(function(req, res, next) {
     next();
   });
 
-// app.listen(cors())
+app.use(cors())
 
 app.use(express.json())
 
