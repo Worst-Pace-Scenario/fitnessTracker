@@ -11,7 +11,7 @@ const {
   getAllRoutinesByUser
 } = require("../db/index.js")
 
-userRouter.post("/users/register", async (req, res) => {
+userRouter.post("/register", async (req, res) => {
   try {
     const {username, password} = req.body;
 
@@ -45,7 +45,7 @@ userRouter.post("/users/register", async (req, res) => {
   }
 })
 
-userRouter.post("/user/login", async(req, res) => {
+userRouter.post("/login", async(req, res) => {
   const {username, password} = req.body;
   
   if (!username || !password) {
@@ -70,7 +70,7 @@ userRouter.post("/user/login", async(req, res) => {
     }
 })
 
-userRouter.get("/users/me", async (req, res)=> {
+userRouter.get("/me", async (req, res)=> {
   const {username, password, id} = req.body
 
   try {
@@ -93,7 +93,7 @@ userRouter.get("/users/me", async (req, res)=> {
    
 })
 
-userRouter.get("/users/:username/routines", async (req, res) =>{
+userRouter.get("/:username/routines", async (req, res) =>{
   const {username, routines, id} = req.body
   try {
     
