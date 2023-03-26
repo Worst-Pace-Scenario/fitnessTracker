@@ -33,13 +33,21 @@ userRouter.post("/register", async (req, res) => {
         });
     }
     
+    console.log("creating user: " + username + " " +password)
     const user = await createUser({ username, password });
+    console.log("created user ", user)
 
+
+    console.log("creating token")
     const token = jwt.sign( user , process.env.JWT_SECRET);
+    console.log("token created ", token )
+
     res.send({
       message: "Registration successful",
       token
-    }).status(201);
+    });
+
+
     } catch (error) {
     console.log(error).status(500)
   }
