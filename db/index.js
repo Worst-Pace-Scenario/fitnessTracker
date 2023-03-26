@@ -1,7 +1,8 @@
 const {Client} = require("pg");
+require("dotenv").config()
 
-const client = new Client(`postgress://localhost:5432/worstPaceScenario`)
-client.password = "1025464"
+const client = new Client(process.env.DATABASE_URL)
+client.password = process.env.DATABASE_PASSWORD
 
 
                                                             //USERS
@@ -393,6 +394,40 @@ async function buildDb() {
         ]
 
         client.connect()
+
+        client.query(`
+        CREATE TABLE users (
+            id SERIAL PRIMARY KEY,
+            username VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL
+        );
+        
+        CREATE TABLE activities (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) UNIQUE NOT NULL,
+            description TEXT NOT NULL
+        );
+        
+        CREATE TABLE routines (
+            id SERIAL PRIMARY KEY,
+            "creatorId" INTEGER REFERENCES users(id),
+            "isPublic" BOOLEAN DEFAULT false,
+            name VARCHAR(255) UNIQUE NOT NULL,
+            goal TEXT NOT NULL
+        );
+        
+        CREATE TABLE "routine_activities" (
+            id SERIAL PRIMARY KEY,
+            "routineId" INTEGER REFERENCES routines(id),
+            "activityId" INTEGER REFERENCES activities(id),
+            duration INTEGER,
+            count INTEGER,
+            UNIQUE("routineId", "activityId")
+        );
+        
+        
+        
+        `)
         
         const users = await Promise.all(usersToCreate.map(createUser))
 
