@@ -143,6 +143,7 @@ async function createRoutine({creatorId, isPublic, name, goal}){
         RETURNING *;
         `, [creatorId, isPublic, name, goal])
 
+        if (!rows.length) return undefined 
         return rows;
     } catch (error) {
         console.log(error)
@@ -194,7 +195,7 @@ async function getAllRoutines() {
             routine => getRoutineById(routine.id)
         ))
 
-        return rows;
+        return routines;
     } catch (error) {
         console.log(error)
     }
@@ -330,6 +331,8 @@ async function addActivityToRoutine({routineId, activityId, count, duration}) {
         RETURNING *;
         `, [routineId, activityId, count, duration])
         
+        if(!routAct) return undefined
+
         return routAct;
     } catch (error) {
         console.log(error)
