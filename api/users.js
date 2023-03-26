@@ -1,54 +1,112 @@
-const express = require('express');
+const express = require('express')
 const userRouter = express.Router();
 const jwt = require('jsonwebtoken')
-require('dotenv').config(); 
+require ('dotenv').config();
 
 const {
-  createUser, 
+  createUser,
   getUser, 
-  getUserById, 
-  getUserByUsername
-} = require('..db'); 
+  getUserById,
+  getUserByUsername, 
+  getAllRoutinesByUser
+} = require("../db/index.js")
 
+userRouter.post("/users/register", async (req, res) => {
+  try {
+    const {username, password} = req.body;
 
-userRouter.post("/users/register", async(req, res) => {
-    const {username, password } = req.body
+    const userExists = await getUserByUsername(username)
 
-    if (!username || !password) {
-        res.send({
-            // name: 
-            message: "please provide both username and password"
-        })
+    if (userExists) {
+      return res.status(409).json({
+        message: "Username already exists, please try again"
+      })
     }
-    try {
-        const user = await createUser ({username, password});
+
+    if (password.length < 8) {
+        return res.status(400).json({
+          message: "Password must be at least 8 characters"
+        });
+      } else if (username.length < 8) {
+        return res.status(400).json({
+          message: "Username must be at least 8 characters"
+        });
+    }
     
-        if (user && user.password == password) {
-          const token = jwt.sign(user, process.env.JWT_SECRET);
-          // create token & return to user
-          res.send({ message: "you're logged in!", token:token });
-        } else {
-          next({ 
-            name: 'IncorrectCredentialsError', 
-            message: 'Username or password is incorrect'
-          });
-        }
-      } catch(error) {
-        console.log(error);
-        next(error);
-      }
+    const user = await createUser({ username, password });
+
+    const token = jwt.sign({ id: user.id, username }, process.env.JWT_SECRET);
+    res.status(201).json({
+      message: "Registration successful",
+      token
+    });
+    } catch (error) {
+    console.log(error).status(500)
+  }
 })
 
 userRouter.post("/user/login", async(req, res) => {
+  const {username, password} = req.body;
+  
+  if (!username || !password) {
+    res.send({
+      message: "please provide both username and password or register for a new account"
+    })
+  }
+  try {
+      const user = await getUser ({username, password});
 
+      if (user && user.password == password) {
+        const token = jwt.sign(user, process.env.JWT_SECRET);
+        // create token & return to user
+        res.send({ message: "you're logged in!", token:token });
+      } else {
+        res.send({ 
+          message: 'Invalid username or password'
+        });
+      }
+    } catch(error) {
+      console.log(error).status(500)
+    }
 })
 
-userRouter.get("/users/me*", async (req, res)=> {
+userRouter.get("/users/me", async (req, res)=> {
+  const {username, password, id} = req.body
 
+  try {
+    const user = await getUserById ({username, password, id});
+
+    if (user && user.password == password) {
+      const token = jwt.sign(user, process.env.JWT_SECRET);
+      // create token & return to user
+      res.send({ 
+        message: "you're logged in!", token:token });
+    } else {
+      res.send({ 
+        message: 'Invalid username or password'.status(401)
+      });
+    }
+  } catch(error) {
+    console.log(error).status(505)
+  }
+  res.send({username, id})
+   
 })
 
 userRouter.get("/users/:username/routines", async (req, res) =>{
-
+  const {username, routines, id} = req.body
+  try {
+    const userRoutines = await getAllRoutinesByUser ({username, routines, id})
+    if (username && id == user.id ) {
+      res.send(userRoutines).status(202)
+    }
+    
+  } catch (error) {
+    console.log(error).status(505)
+  }
 })
+
+
+
 
 
