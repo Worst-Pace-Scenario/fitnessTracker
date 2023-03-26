@@ -1,6 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
+const cors = require("cors")
 require('dotenv').config();
 
 const {RoutineRouter} = require("./api/routines")
@@ -13,9 +14,12 @@ const {client} = require("./db")
 
 const app = express();
 
+app.listen(cors())
+
 app.use(express.json())
 
 app.use(morgan('dev'));
+
 
 app.use("/api/routines", RoutineRouter)
 
