@@ -36,10 +36,10 @@ userRouter.post("/register", async (req, res) => {
     const user = await createUser({ username, password });
 
     const token = jwt.sign( user , process.env.JWT_SECRET);
-    res.status(201).json({
+    res.send({
       message: "Registration successful",
       token
-    });
+    }).status(201);
     } catch (error) {
     console.log(error).status(500)
   }
@@ -66,7 +66,7 @@ userRouter.post("/login", async(req, res) => {
         });
       }
     } catch(error) {
-      console.log(error).status(500)
+      res.sned(error).status(500)
     }
 })
 
