@@ -108,7 +108,7 @@ userRouter.get("/users/:username/routines", async (req, res) =>{
   }
 })
 
-
+module.exports = {userRouter}
 
 
 
