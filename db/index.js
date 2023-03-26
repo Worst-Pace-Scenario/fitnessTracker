@@ -1,7 +1,7 @@
 const {Client} = require("pg");
 require("dotenv").config()
 
-const client = new Client(process.env.DATBASE_URL)
+const client = new Client(process.env.DATABASE_URL)
 client.password = process.env.DATABASE_PASSWORD
 
 
