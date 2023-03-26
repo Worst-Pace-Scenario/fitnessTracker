@@ -6,7 +6,7 @@ const {getAllPublicRoutines, getRoutinesWithoutActivities, createRoutine, getRou
 RoutineRouter.get("/", async (req,res) => {
     const allRoutines = await getAllPublicRoutines();
 
-    res.send({allRoutines})
+    res.send(allRoutines)
 })
 
 RoutineRouter.post("/", async(req, res) =>{
