@@ -33,7 +33,7 @@ app.use("/api/routines", RoutineRouter)
 
 app.use("/api/activities", activities)
 
-app.use("api/users", userRouter)
+app.use("/api/users", userRouter)
 
 app.use("/api/routine_activities", RoutineActivities)
 
