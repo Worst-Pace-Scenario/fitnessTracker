@@ -113,7 +113,7 @@ userRouter.get("/:username/routines", async (req, res) =>{
   const {username, routines, id} = req.user
   try {
     
-    if (req.body.user) {
+    if (req.user) {
       const userRoutines = await getAllRoutinesByUser ({username, routines, id})
       res.send(userRoutines).status(202)
     } else {
