@@ -2,13 +2,19 @@ const express = require('express');
 const apiRouter = express.Router();
 
 const jwt = require('jsonwebtoken');
-const { getUserById } = require('../db');
+const { getUserById, getUser } = require('../db');
 const { JWT_SECRET } = process.env;
 const password = "1025464"
 
 apiRouter.use(async (req, res, next) => {
   const prefix = 'Bearer ';
-  const auth = req.header('Authorization');
+  let auth = "";
+    if(req.header("Authorization")){
+        auth = req.header('Authorization');
+    }
+    if(req.header("authorization")){
+        auth = req.header("authorization")
+    }
 
   if (!auth) { 
     next();
@@ -16,11 +22,11 @@ apiRouter.use(async (req, res, next) => {
     const token = auth.slice(prefix.length);
 
     try {
-      const { id } = jwt.verify(token, JWT_SECRET);
+      const { username, password } = jwt.verify(token, JWT_SECRET);
     // const { id } = jwt.verify(token, password);
 
-      if (id) {
-        req.user = await getUserById(id);
+      if (username) {
+        req.user = await getUser({username, password});
         next();
       }
     } catch ({ name, message }) {
