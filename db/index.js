@@ -40,11 +40,13 @@ async function getUser({username, password}){
 }
 
 async function getUserById(id) {
+    console.log("getting user by ID " + id)
     try {
         const {rows: [user]} = await client.query(`
         SELECT id, username FROM users
         WHERE id = $1;
         `,[id])
+        console.log("got this from function: ", user)
         if(!user) return null
 
         const routines = await getAllRoutinesByUser(user);
