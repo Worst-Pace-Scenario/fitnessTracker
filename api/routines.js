@@ -13,7 +13,7 @@ RoutineRouter.post("/", async(req, res) =>{
     if(!req.user) res.send({error: "You must be logged in to perform this action"}).status(401)
     
     const {name, goal,} = req.body;
-    const creatorId = req.body.user.id
+    const creatorId = req.user.id
     
     let isPublic = false;
     if(req.body.isPublic) {
@@ -30,7 +30,7 @@ RoutineRouter.patch("/:routineId", async (req,res) =>{
     const {routineId} = req.params;
     
     const {name, goal,} = req.body;
-    const creatorId = req.body.user.id
+    const creatorId = req.user.id
     
     let isPublic = false;
     if(req.body.isPublic) {
@@ -58,7 +58,7 @@ RoutineRouter.patch("/:routineId", async (req,res) =>{
 RoutineRouter.delete("/:routineId", async (req, res) => {
     const {routineId} = req.params;
 
-    const creatorId = req.body.user.id
+    const creatorId = req.user.id
 
     try {
         const deltedRout = await getRoutineById(routineId);
