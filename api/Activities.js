@@ -38,7 +38,7 @@ activities.get('/', async (req, res) => {
 
 
 // POST /api/activities
-activities.post('/activities', async (req, res) => {
+activities.post('/', async (req, res) => {
     try {
       const { name, description } = req.body;
       const newActivity = await createActivity({ name, description });
@@ -51,7 +51,7 @@ activities.post('/activities', async (req, res) => {
   
 
 // // PATCH /api/activities/:activityId
-activities.patch('/activities/:activityId', async (req, res) => {
+activities.patch('/:activityId', async (req, res) => {
     try {
       const id = req.params.id;
       const { name, description } = req.body;

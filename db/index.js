@@ -149,7 +149,7 @@ async function createRoutine({creatorId, isPublic, name, goal}){
         RETURNING *;
         `, [creatorId, isPublic, name, goal])
 
-        if (!rows.length) return undefined 
+        if (!rows) return undefined 
         return rows;
     } catch (error) {
         console.log(error)
