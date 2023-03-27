@@ -1,10 +1,10 @@
 const {Client} = require("pg");
 require("dotenv").config()
 
-const client = new Client(process.env.DATABASE_URL)
-// const client = new Client(process.env.LOCAL_URL)
-client.password = process.env.DATABASE_PASSWORD
-// client.password = process.env.LOCAL_PASSWORD
+// const client = new Client(process.env.DATABASE_URL)
+const client = new Client(process.env.LOCAL_URL)
+// client.password = process.env.DATABASE_PASSWORD
+client.password = process.env.LOCAL_PASSWORD
 
 
                                                             //USERS
@@ -23,12 +23,13 @@ async function createUser({username, password}) {
     }
 }
 
-async function getUser({username, password}){
+async function getUser({username}){
+    console.log("looking for " + username)
     try {
         const {rows : [user] } = await client.query(`
             SELECT * FROM users
-            WHERE username = $1 AND password = $2;
-        `,[username, password])
+            WHERE username = $1;
+        `,[username])
 
         if(!user) return null;
 
