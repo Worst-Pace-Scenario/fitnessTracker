@@ -120,7 +120,7 @@ userRouter.get("/:username/routines", async (req, res) =>{
       const userRoutines = await getAllRoutinesByUser (user)
       res.send(userRoutines).status(202)
     } else {
-      res.send("you are not logged in").status(401)
+      res.send("This user does not exist").status(401)
     }
     } catch (error) {
     res.send(error).status(505)
