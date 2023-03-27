@@ -10,7 +10,7 @@ RoutineRouter.get("/", async (req,res) => {
 })
 
 RoutineRouter.post("/", async(req, res) =>{
-    if(!req.body.user) res.send("You must be logged in to perform this action")
+    if(!req.body.user) res.send("You must be logged in to perform this action").status(401)
     
     const {name, goal,} = req.body;
     const creatorId = req.body.user.id
