@@ -25,6 +25,7 @@ apiRouter.use(async (req, res, next) => {
     const token = auth.slice(prefix.length);
 
     try {
+      
       const { username, password, id } = jwt.verify(token, secret);
     // const { id } = jwt.verify(token, password);
       console.log("calling function for this id: " + id)

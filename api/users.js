@@ -13,7 +13,7 @@ const {
 
 userRouter.post("/register", async (req, res) => {
   try {
-    const {username, password} = req.body;
+    const {username, password} = req.user;
 
     const userExists = await getUserByUsername(username)
 
@@ -55,7 +55,7 @@ userRouter.post("/register", async (req, res) => {
 })
 
 userRouter.post("/login", async(req, res) => {
-  const {username, password} = req.body;
+  const {username, password} = req.user;
   
   if (!username || !password) {
     res.send({
@@ -64,6 +64,7 @@ userRouter.post("/login", async(req, res) => {
   }
   try {
       const user = await getUser ({username, password});
+      console.log(user)
 
      
 
@@ -83,30 +84,33 @@ userRouter.post("/login", async(req, res) => {
 })
 
 userRouter.get("/me", async (req, res)=> {
-  const {username, password, id} = req.body
+  const {username, id} = req.user
+  console.log(username)
+  console.log(id)
 
   try {
-    const user = await getUserById ({username, password, id});
+    res.send({username, id})
 
-    if (user && user.password == password) {
-      const token = jwt.sign(user, process.env.JWT_SECRET);
-      // create token & return to user
-      res.send({ 
-        message: "you're logged in!", token:token });
-    } else {
-      res.send({ 
-        message: 'Invalid username or password'.status(401)
-      });
-    }
+    // if (user && user.password == password) {
+    //   const token = jwt.sign(user, process.env.JWT_SECRET);
+    //   // create token & return to user
+    //   res.send({ 
+    //     message: "you're logged in!", token:token });
+    // } else {
+    //   res.send({ 
+    //     message: 'Invalid username or password'.status(401)
+    //   });
+    // }
+
+
   } catch(error) {
-    console.log(error).status(505)
+    res.send(error).status(505)
   }
-  res.send({username, id})
    
 })
 
 userRouter.get("/:username/routines", async (req, res) =>{
-  const {username, routines, id} = req.body
+  const {username, routines, id} = req.user
   try {
     
     if (req.body.user) {
@@ -116,7 +120,7 @@ userRouter.get("/:username/routines", async (req, res) =>{
       res.send("you are not logged in").status(401)
     }
     } catch (error) {
-    console.log(error).status(505)
+    res.send(error).status(505)
   }
 })
 

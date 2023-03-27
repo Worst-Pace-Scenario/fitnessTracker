@@ -8,6 +8,7 @@ const {RoutineRouter} = require("./api/routines")
 const activities = require("./api/Activities")
 const {userRouter} = require("./api/users")
 const RoutineActivities = require("./api/RoutineActivities")
+const apiRouter = require("./api/index")
 
 
 const {client} = require("./db")
@@ -27,6 +28,8 @@ app.use(cors())
 app.use(express.json())
 
 app.use(morgan('dev'));
+
+app.use(apiRouter)
 
 
 app.use("/api/routines", RoutineRouter)
