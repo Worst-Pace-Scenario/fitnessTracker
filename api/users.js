@@ -13,7 +13,7 @@ const {
 
 userRouter.post("/register", async (req, res) => {
   try {
-    const {username, password} = req.user;
+    const {username, password} = req.body;
 
     const userExists = await getUserByUsername(username)
 
@@ -50,12 +50,12 @@ userRouter.post("/register", async (req, res) => {
 
 
     } catch (error) {
-    console.log(error).status(500)
+    res.send(error).status(500)
   }
 })
 
 userRouter.post("/login", async(req, res) => {
-  const {username, password} = req.user;
+  const {username, password} = req.body;
   
   if (!username || !password) {
     res.send({
@@ -110,11 +110,14 @@ userRouter.get("/me", async (req, res)=> {
 })
 
 userRouter.get("/:username/routines", async (req, res) =>{
-  const {username, routines, id} = req.user
+   const {username} = req.params
+   console.log("params: " + username)
   try {
+
+    const user = await getUser({username})
     
-    if (req.body.user) {
-      const userRoutines = await getAllRoutinesByUser ({username, routines, id})
+    if (user) {
+      const userRoutines = await getAllRoutinesByUser (user)
       res.send(userRoutines).status(202)
     } else {
       res.send("you are not logged in").status(401)

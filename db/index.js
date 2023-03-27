@@ -23,12 +23,13 @@ async function createUser({username, password}) {
     }
 }
 
-async function getUser({username, password}){
+async function getUser({username}){
+    console.log("looking for " + username)
     try {
         const {rows : [user] } = await client.query(`
             SELECT * FROM users
-            WHERE username = $1 AND password = $2;
-        `,[username, password])
+            WHERE username = $1;
+        `,[username])
 
         if(!user) return null;
 
